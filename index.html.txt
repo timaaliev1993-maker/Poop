@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>💩 ЗАПУСТИ КАКАХУ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            padding: 5px;
+        }
+
+        .game {
+            max-width: 380px;
+            width: 100%;
+            background: white;
+            border-radius: 25px;
+            padding: 12px;
+            border: 3px solid gold;
+            position: relative;
+        }
+
+        .flag {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, 
+                #0038b8 0%, #0038b8 20%,
+                white 20%, white 40%,
+                #0038b8 40%, #0038b8 60%,
+                white 60%, white 80%,
+                #0038b8 80%, #0038b8 100%);
+            opacity: 0.1;
+            border-radius: 22px;
+            z-index: 0;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .title {
+            background: #0038b8;
+            color: white;
+            padding: 10px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 10px;
+            border: 2px solid gold;
+            font-weight: bold;
+            font-size: 22px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .score-box {
+            background: gold;
+            padding: 10px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 10px;
+            border: 2px solid #b8860b;
+        }
+
+        .score-label {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .score-number {
+            font-size: 50px;
+            font-weight: bold;
+            color: #0038b8;
+            line-height: 1;
+        }
+
+        /* ФОТО */
+        .image-box {
+            width: 100%;
+            height: 320px;
+            margin-bottom: 10px;
+            border: 3px solid gold;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #f0f0f0;
+            position: relative;
+        }
+
+        .image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .effects {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .poop {
+            position: absolute;
+            font-size: 35px;
+            animation: fly 0.3s ease-out forwards;
+            filter: drop-shadow(0 0 5px #8B4513);
+            z-index: 10;
+        }
+
+        @keyframes fly {
+            0% { transform: scale(0) rotate(0deg); opacity: 0; }
+            50% { transform: scale(1.3) rotate(20deg); opacity: 1; }
+            100% { transform: scale(1) rotate(10deg); opacity: 0.9; }
+        }
+
+        .stain {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: #8B4513;
+            border-radius: 50%;
+            filter: blur(4px);
+            opacity: 0.7;
+            animation: stain 0.3s forwards;
+            z-index: 5;
+        }
+
+        @keyframes stain {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 0.7; }
+        }
+
+        @keyframes shake {
+            0%,100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .shake {
+            animation: shake 0.2s;
+        }
+
+        .button-wrap {
+            display: flex;
+            justify-content: center;
+            margin: 15px 0;
+        }
+
+        .click-btn {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #8B4513, #4A2511);
+            border: none;
+            box-shadow: 0 10px 0 #2D1A07, 0 5px 15px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 4px solid #CD853F;
+            transition: 0.1s;
+        }
+
+        .click-btn:active {
+            transform: translateY(8px);
+            box-shadow: 0 2px 0 #2D1A07, 0 5px 10px rgba(0,0,0,0.3);
+        }
+
+        .btn-icon {
+            font-size: 70px;
+            margin-bottom: 5px;
+            filter: drop-shadow(2px 4px 0 #2D1A07);
+        }
+
+        .btn-text {
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background: rgba(0,0,0,0.4);
+            padding: 5px 20px;
+            border-radius: 50px;
+            letter-spacing: 1px;
+            border: 1px solid #CD853F;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            background: #0038b8;
+            padding: 10px;
+            border-radius: 15px;
+            border: 2px solid gold;
+            color: white;
+        }
+
+        .stat {
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-label {
+            color: gold;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .footer-note {
+            text-align: center;
+            color: #666;
+            font-size: 11px;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="game">
+        <div class="flag"></div>
+        
+        <div class="content">
+            <!-- НОВЫЙ ЗАГОЛОВОК -->
+            <div class="title">💩 ЗАПУСТИ КАКАХУ 💩</div>
+            
+            <div class="score-box">
+                <div class="score-label">ВЕЧНЫЙ СЧЕТЧИК</div>
+                <div class="score-number" id="counter">0</div>
+            </div>
+            
+            <!-- ФОТО -->
+            <div class="image-box" id="photoBox">
+                <img src="https://cdn.pixabay.com/photo/2016/11/29/03/53/man-1867175_1280.jpg" 
+                     id="targetImage" 
+                     alt="target"
+                     crossorigin="anonymous">
+                <div class="effects" id="effects"></div>
+            </div>
+            
+            <!-- КНОПКА -->
+            <div class="button-wrap">
+                <button class="click-btn" id="clicker">
+                    <span class="btn-icon">💩</span>
+                    <span class="btn-text">ПУСК</span>
+                </button>
+            </div>
+            
+            <!-- СТАТИСТИКА -->
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-label">ЗАПУСКОВ</div>
+                    <div class="stat-value" id="throwsStat">0</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">КАКАХ</div>
+                    <div class="stat-value" id="hitsStat">0</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">ВСЕГО</div>
+                    <div class="stat-value" id="totalStat">0</div>
+                </div>
+            </div>
+            
+            <div class="footer-note">
+                👆 нажми ПУСК чтобы запустить какаху
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ВЕЧНЫЙ СЧЕТЧИК
+            let total = 0;
+            let throws = 0;
+            
+            try {
+                let saved = localStorage.getItem('kakaha_total');
+                if (saved) total = parseInt(saved) || 0;
+            } catch(e) {}
+            
+            // ЭЛЕМЕНТЫ
+            const counter = document.getElementById('counter');
+            const throwsStat = document.getElementById('throwsStat');
+            const hitsStat = document.getElementById('hitsStat');
+            const totalStat = document.getElementById('totalStat');
+            const photoBox = document.getElementById('photoBox');
+            const effects = document.getElementById('effects');
+            const clicker = document.getElementById('clicker');
+            
+            // ОБНОВЛЕНИЕ
+            function updateDisplay() {
+                counter.textContent = total;
+                throwsStat.textContent = throws;
+                hitsStat.textContent = total;
+                totalStat.textContent = total;
+                
+                try {
+                    localStorage.setItem('kakaha_total', total.toString());
+                } catch(e) {}
+            }
+            
+            // ЗВУК
+            function playSound() {
+                try {
+                    let audio = new (window.AudioContext || window.webkitAudioContext)();
+                    let osc = audio.createOscillator();
+                    let gain = audio.createGain();
+                    
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(150, audio.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(70, audio.currentTime + 0.2);
+                    
+                    gain.gain.setValueAtTime(0.2, audio.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audio.currentTime + 0.2);
+                    
+                    osc.connect(gain);
+                    gain.connect(audio.destination);
+                    
+                    osc.start();
+                    osc.stop(audio.currentTime + 0.2);
+                    
+                    if (audio.state === 'suspended') audio.resume();
+                } catch(e) {}
+            }
+            
+            // ПОПАДАНИЕ
+            function addHit() {
+                let box = photoBox.getBoundingClientRect();
+                if (box.width === 0) return;
+                
+                // 2-3 попадания за раз
+                let count = 2 + Math.floor(Math.random() * 2);
+                
+                for (let i = 0; i < count; i++) {
+                    setTimeout(() => {
+                        let x = Math.random() * box.width;
+                        let y = Math.random() * box.height;
+                        
+                        // ПЯТНО
+                        let stain = document.createElement('div');
+                        stain.className = 'stain';
+                        stain.style.left = (x - 20) + 'px';
+                        stain.style.top = (y - 20) + 'px';
+                        
+                        // КАКАХА
+                        let emoji = document.createElement('div');
+                        emoji.className = 'poop';
+                        emoji.style.left = (x - 17) + 'px';
+                        emoji.style.top = (y - 25) + 'px';
+                        emoji.textContent = '💩';
+                        
+                        effects.appendChild(stain);
+                        effects.appendChild(emoji);
+                        
+                        setTimeout(() => {
+                            stain.remove();
+                            emoji.remove();
+                        }, 800);
+                    }, i * 50);
+                }
+                
+                photoBox.classList.add('shake');
+                setTimeout(() => {
+                    photoBox.classList.remove('shake');
+                }, 200);
+            }
+            
+            // КЛИК
+            function handleClick(e) {
+                e.preventDefault();
+                
+                total++;
+                throws++;
+                
+                playSound();
+                addHit();
+                updateDisplay();
+                
+                try { window.navigator.vibrate(20); } catch(e) {}
+            }
+            
+            // СОБЫТИЯ
+            clicker.addEventListener('click', handleClick);
+            clicker.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                handleClick(e);
+            });
+            
+            // СТАРТ
+            updateDisplay();
+        })();
+    </script>
+</body>
+</html>
